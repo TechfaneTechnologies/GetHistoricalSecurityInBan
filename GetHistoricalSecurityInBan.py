@@ -21,10 +21,10 @@ import platform
 import datetime
 from glob import glob
 from time import sleep
-from json import JSONDecodeError
 from functools import partial
-from datetime import date, datetime as dt
+from json import JSONDecodeError
 from typing import List, Dict, Tuple, Union, Optional
+from datetime import date, datetime as dt, timedelta as td
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 try:
@@ -90,6 +90,17 @@ def getListChunks(
         )  # noqa: E501
     )
 
+
+def getNextBusinessDate() -> date:
+    if dt.today().weekday() <= 3:
+        return (dt.today() + td(days=1)).date()
+    if dt.today().weekday() == 4:
+        return (dt.today() + td(days=3)).date()
+    if dt.today().weekday() == 5:
+        return (dt.today() + td(days=2)).date()
+    if dt.today().weekday() == 6:
+        return (dt.today() + td(days=1)).date()
+        
 
 async def log_request(request: httpx.Request) -> httpx.Request:
     global logger
@@ -222,9 +233,9 @@ async def fetch(
         ]
     )
 
-
+        
 async def getHistoricalSecurityInBanCSV(
-    date: Union[date, str] = dt.today().date(),
+    date: Union[date, str] = getNextBusinessDate(),
     limit: asyncio.Semaphore = asyncio.Semaphore(2),
 ) -> Tuple[str, Optional[httpx.Response]]:
     global client
@@ -312,7 +323,7 @@ async def getSecuritiesInBanPeriodFiles(
 ) -> None:
     df = pd.bdate_range(
         start=date(2008, 1, 1),
-        end=dt.today().date(),
+        end=getNextBusinessDate(),
     ).to_frame(  # noqa: E501
         index=False, name="Date"
     )
@@ -353,7 +364,7 @@ def mergeAllSecuritiesInBanPeriodFiles(all_historical: bool = False) -> None:
             "HistoricalSecurityInBan.csv", index=True
         )  # noqa E501
     else:
-        archive_file = f'DayWiseSecurityInBanCSVFiles/fo_secban_{dt.today().date().strftime("%d%m%Y")}.csv'  # noqa E501
+        archive_file = f'DayWiseSecurityInBanCSVFiles/fo_secban_{getNextBusinessDate().strftime("%d%m%Y")}.csv'  # noqa E501
         main_file = "HistoricalSecurityInBan.csv"
         df = (
             pd.concat(
