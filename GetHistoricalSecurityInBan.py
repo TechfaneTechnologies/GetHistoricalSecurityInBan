@@ -92,13 +92,11 @@ def getListChunks(
 
 
 def getNextBusinessDate() -> date:
-    if dt.today().weekday() <= 3:
-        return (dt.today() + td(days=1)).date()
     if dt.today().weekday() == 4:
         return (dt.today() + td(days=3)).date()
-    if dt.today().weekday() == 5:
+    elif dt.today().weekday() == 5:
         return (dt.today() + td(days=2)).date()
-    if dt.today().weekday() == 6:
+    else:
         return (dt.today() + td(days=1)).date()
         
 
