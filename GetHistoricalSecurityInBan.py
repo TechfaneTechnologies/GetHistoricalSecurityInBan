@@ -363,6 +363,7 @@ def mergeAllSecuritiesInBanPeriodFiles(all_historical: bool = False) -> None:
         )  # noqa E501
     else:
         archive_file = f'DayWiseSecurityInBanCSVFiles/fo_secban_{getNextBusinessDate().strftime("%d%m%Y")}.csv'  # noqa E501
+        print(readCsv(archive_file))
         main_file = "HistoricalSecurityInBan.csv"
         df = (
             pd.concat(
