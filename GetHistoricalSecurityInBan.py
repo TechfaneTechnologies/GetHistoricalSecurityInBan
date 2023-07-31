@@ -375,9 +375,10 @@ def mergeAllSecuritiesInBanPeriodFiles(all_historical: bool = False) -> None:
                 )
             )
             .sort_values(by=["Date"])
-            .to_csv("HistoricalSecurityInBan.csv", index=True)
         )  # noqa E501
-
+        print(df)
+        df.to_csv(main_file, index=True)
+        
 
 async def fetchCsvFiles(all_historical: bool = False) -> None:
     global client
