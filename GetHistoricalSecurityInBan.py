@@ -349,8 +349,8 @@ def mergeAllSecuritiesInBanPeriodFiles(all_historical: bool = False) -> None:
                 "names": ["Date", "SecurityInBan"],
                 "skiprows": 1,
                 "index_col": 0,
-                "parse_dates": True,
-                "keep_date_col": True,
+                # "parse_dates": True,
+                # "keep_date_col": True,
             }
         )
         return pd.read_csv(*args, **kwargs)
@@ -375,7 +375,7 @@ def mergeAllSecuritiesInBanPeriodFiles(all_historical: bool = False) -> None:
                     ],
                 )
             )
-            .sort_values(by=["Date"])
+            # .sort_values(by=["Date"])
         )  # noqa E501
         print(df)
         df.to_csv(main_file, index=True)
