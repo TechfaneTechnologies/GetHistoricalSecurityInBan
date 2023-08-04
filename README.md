@@ -2,7 +2,7 @@
 A Python Script To Fetch Securities In Ban period Files From NSE Website.
 
 ## Update Frequency
-Check for updates daily at 09:30 PM IST
+Check for updates daily at 09:30PM IST
 
 ## Raw CSV File
 - [HistoricalSecurityInBan.csv](https://techfanetechnologies.github.io/GetHistoricalSecurityInBan/HistoricalSecurityInBan.csv)
